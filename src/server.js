@@ -1,20 +1,19 @@
 import express from "express";
-// import dotenv from "dotenv";
-// import path from "path";
+import dotenv from "dotenv";
+import path from "path";
 import morgan from "morgan";
 import cors from "cors";
 import { contactsController } from "./contacts/contacts.controller.js";
-// console.log("contactsController",contactsController);
+import { getPaths } from "./helpers/utils.js"
 
 export class ContactsServer {
   constructor() {
     this.server = null;
-    this.PORT=3000
   }
 
   start() {
     this.initServer();
-    // this.initConfig();
+    this.initConfig();
     this.initMiddlewares();
     this.initRoutes();
     this.initErrorHandling();
@@ -24,12 +23,12 @@ export class ContactsServer {
   initServer() {
     this.server = express();
   }
-//   initConfig() {
-//     const { pathname } = new URL(import.meta.url);
-//     const __dirname = path.dirname(pathname);
-//     console.log("__dirname", __dirname);
-//     dotenv.config({ path: path.join(__dirname, "../.env") });
-//   }
+  initConfig() {
+
+    const { __dirname } = getPaths(import.meta.url);
+    dotenv.config({ path: path.join(__dirname, "../.env") });
+    
+  }
   initMiddlewares() {
     this.server.use(express.json());
     this.server.use(cors());
@@ -48,9 +47,9 @@ export class ContactsServer {
   }
 
   startListening() {
-    // const { PORT } = process.env;
-    this.server.listen(this.PORT, () => {
-      console.log("Server started listening on port", this.PORT);
+    const { PORT } = process.env;
+    this.server.listen(PORT, () => {
+      console.log("Server started listening on port", PORT);
     });
   }
 }

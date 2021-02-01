@@ -1,10 +1,9 @@
 import { Router } from "express";
-import {listContacts,getContactById} from "./contacts.model.js";
-
+import {listContacts,getContactById,removeContact,addContact,updateContact} from "./contacts.model.js";
 import Joi from "joi";
+import { validate } from "../helpers/validate.js";
 
 const controller = Router();
-// console.log("controller",controller);
 
 const createContactsSchema = Joi.object({
     name: Joi.string().required(),
@@ -19,7 +18,9 @@ const createContactsSchema = Joi.object({
 
 controller.get("/", listContacts);
 controller.get("/:id", getContactById);
-
+controller.delete("/:id", removeContact);
+controller.post("/", validate(createContactsSchema), addContact);
+controller.patch("/:id", validate(updateContactsSchema),updateContact);
 
   
 export const contactsController = controller;
