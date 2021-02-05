@@ -1,10 +1,22 @@
 import fs from "fs/promises";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import Joi from "joi";
 import { getPaths } from "../helpers/utils.js";
 
 const {__dirname}=getPaths(import.meta.url)
 const contactsPath = path.join(__dirname, "../db/contacts.json");
+
+const createContactsSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  phone: Joi.string().required(),
+});
+const updateContactsSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string().email(),
+  phone: Joi.string(),
+}).min(1);
 
 async function listContacts(req, res) {
   try {
@@ -84,4 +96,4 @@ async function updateContact(req, res) {
     }
   }
 
-export { listContacts, getContactById,removeContact, addContact,updateContact}
+export { listContacts, getContactById,removeContact, addContact,updateContact,createContactsSchema,updateContactsSchema}
