@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import path from "path";
 import morgan from "morgan";
 import cors from "cors";
+import mongoose from "mongoose";
 import { contactsController } from "./contacts/contacts.controller.js";
 import { getPaths } from "./helpers/utils.js"
 
@@ -11,9 +12,10 @@ export class ContactsServer {
     this.server = null;
   }
 
-  start() {
+  async start() {
     this.initServer();
     this.initConfig();
+    await this.initDatabase()
     this.initMiddlewares();
     this.initRoutes();
     this.initErrorHandling();
@@ -29,6 +31,23 @@ export class ContactsServer {
     dotenv.config({ path: path.join(__dirname, "../.env") });
     
   }
+
+  async initDatabase() {
+    try{
+      await mongoose.connect(process.env.MONGODB_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+      });
+      console.log("Database connection successful");
+
+    }catch(error){
+      console.error("there was an error:", error.message);
+      process.exit(1);
+    }
+  }
+  
   initMiddlewares() {
     this.server.use(express.json());
     this.server.use(cors());
