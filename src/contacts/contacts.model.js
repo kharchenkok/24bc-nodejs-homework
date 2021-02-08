@@ -90,4 +90,3 @@ async function updateContact(req, res) {
   }
 
 export { listContacts,getContactById,removeContact,addContact,updateContact,createContactsSchema,updateContactsSchema,contactsIdSchema}
-
