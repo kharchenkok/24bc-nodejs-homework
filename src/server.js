@@ -7,7 +7,8 @@ import mongoose from "mongoose";
 import { contactsController } from "./contacts/contacts.controller.js";
 import { getPaths } from "./helpers/utils.js"
 import { authController } from "./auth/auth.controller.js";
-
+import cookieParser from "cookie-parser";
+import {usersController} from "./users/users.controller.js"
 export class ContactsServer {
   constructor() {
     this.server = null;
@@ -53,11 +54,13 @@ export class ContactsServer {
     this.server.use(express.json());
     this.server.use(cors());
     this.server.use(morgan("combined"));
+    this.server.use(cookieParser(process.env.COOKIE_SECRET))
   }
 
   initRoutes() {
     this.server.use("/contacts", contactsController);
     this.server.use("/auth", authController);
+    this.server.use("/users", usersController);
   }
 
   initErrorHandling() {

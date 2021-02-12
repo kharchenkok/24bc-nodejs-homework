@@ -1,12 +1,8 @@
 import { Conflict } from "../helpers/error.constructors.js";
 import { userModel } from "../users/user.model.js";
-// import {
-//   Conflict,
-//   NotFound,
-//   Forbidden,
-// } from "../helpers/error.constructors.js";
+
 import bcryptjs from "bcryptjs";
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 class AuthService {
   async register(userParams) {
@@ -29,35 +25,31 @@ class AuthService {
     return newUser;
   }
 
-//   async signIn(credentials) {
-//     // 1. validate req.body +
-//     // 2. check if user with such email exists +
-//     // 3. if not exist - throw 404 +
-//     // 4. if exists:
-//     // 4.1. check password +
-//     // 4.2. password is wrong - throw 403 +
-//     // 4.3. password is right:
-//     // 4.3.1. generate token for user +
-//     // 4.3.2. send successful response
-//     const { email, password } = credentials;
-//     const user = await userModel.findOne({ email });
+  async login(credentials) {
 
-//     if (!user) {
-//       throw new NotFound(`User with email ${email} was not found`);
-//     }
+    const { email, password } = credentials;
+    const user = await userModel.findOne({ email });
 
-//     const isRightPassword = await bcryptjs.compare(password, user.passwordHash);
-//     if (!isRightPassword) {
-//       throw new Forbidden(`Provided password is wrong`);
-//     }
+    if (!user) {
+      throw new NotFound(`User with email ${email} was not found`);
+    }
 
-//     const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
-//     const token = jwt.sign({ uid: user._id }, JWT_SECRET, {
-//       expiresIn: JWT_EXPIRES_IN,
-//     });
+    const isRightPassword = await bcryptjs.compare(password, user.passwordHash);
+    if (!isRightPassword) {
+      throw new Forbidden(`Provided password is wrong`);
+    }
 
-//     return { user, token };
-//   }
+    const { JWT_SECRET, JWT_EXPIRES_IN } = process.env;
+    const token = jwt.sign({ uid: user._id }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES_IN,
+    });
+
+    return { user, token };
+  }
+
+
+
+
 }
 
 export const authService = new AuthService();

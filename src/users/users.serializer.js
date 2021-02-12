@@ -14,6 +14,6 @@ function composeUser(user) {
     id: user._id,
     email: user.email,
     subscription:user.subscription,
-//   token: user.token
+  token: user.token
   };
 }
