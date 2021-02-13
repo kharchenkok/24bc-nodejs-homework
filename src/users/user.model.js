@@ -10,9 +10,9 @@ const userSchema = new Schema({
         enum: ["free", "pro", "premium"],
         default: "free"
       },
-      // token: { type: String, required: false, default: ""}
+      token: { type: String, required: false}
+
 });
 
-// collection name => users
 export const userModel = mongoose.model("User", userSchema);
 

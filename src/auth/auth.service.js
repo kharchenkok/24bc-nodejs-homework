@@ -43,12 +43,8 @@ class AuthService {
     const token = jwt.sign({ uid: user._id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
     });
-
     return { user, token };
   }
-
-
-
 
 }
 
