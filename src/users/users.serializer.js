@@ -11,7 +11,7 @@ export function composeUsers(users) {
 
 function composeUser(user) {
   return {
-    id: user._id,
+    id: user.id,
     email: user.email,
     subscription:user.subscription,
   token: user.token

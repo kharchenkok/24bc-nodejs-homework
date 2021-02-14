@@ -2,7 +2,7 @@ import Joi from "joi";
 import objectId from "joi-objectid";
 import mongoose from "mongoose";
 import { composeContacts } from "./contacts.serializer.js";
-import mongoosePaginate from "mongoose-paginate-v2";
+// import mongoosePaginate from "mongoose-paginate-v2";
 
 const { Schema,Types } = mongoose;
 
@@ -15,8 +15,7 @@ password: { type: String, required: true },
 token: { type: String, required: false, default: ""}
 });
 
-contactsSchema.plugin(mongoosePaginate);
-
+// contactsSchema.plugin(mongoosePaginate);
 
 
 const contactsModel = mongoose.model("Contact", contactsSchema);
@@ -48,14 +47,16 @@ async function listContacts(req, res) {
 
   try {
     // const contactsContent = await contactsModel.paginate({},{offset: 30, limit: 10}).then(result=> result.docs);
-    const contactsContent = await contactsModel.find();
-
-    // const pagin=contactsContent.paginate({},{offset: 30, limit: 10}).then(result=> result.docs)
-    // console.log("pagin",pagin);
-    
-
+        // const pagin=contactsContent.paginate({},{offset: 30, limit: 10}).then(result=> result.docs)
+        // console.log("pagin",pagin);
+    const{sub}=req.query
+    let contactsContent
+    if(sub){
+    contactsContent=await contactsModel.find({ subscription: sub })
+    }else{
+    contactsContent=await contactsModel.find();
+    }
     return res.status(200).send(composeContacts(contactsContent))
-
   } catch (error) {
     console.error("there was an error:", error.message);
 
