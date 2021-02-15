@@ -47,7 +47,8 @@ async function listContacts(req, res) {
 
   try {
     const{sub, page=1,limit=5}=req.query
-    const contactsContent = await contactsModel.paginate({},{page,limit}).then(result=> sub? result.docs.filter(el=>el.subscription===sub):result.docs);
+    const contactsContent = await contactsModel.paginate(sub&&{subscription:sub},{page,limit}).then(result=> result.docs);
+    // const contactsContent = await contactsModel.paginate({},{page,limit}).then(result=> sub? result.docs.filter(el=>el.subscription===sub):result.docs);
     return res.status(200).send(composeContacts(contactsContent))
   } catch (error) {
     console.error("there was an error:", error.message);
