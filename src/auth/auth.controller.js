@@ -6,7 +6,6 @@ import { composeUsers } from "../users/users.serializer.js";
 import Joi from "joi";
 import { authorize } from "../helpers/authorize.js";
 import { usersService } from "../users/users.service.js";
-// import { uploadAvatar } from "../helpers/avatar.js";
 
 
 const router = Router();
@@ -15,15 +14,13 @@ const registerSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   subscription: Joi.string(),
-  avatarURL: Joi.string(),
-  // token: Joi.string()
-
 
 });
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
   subscription: Joi.string(),
+  avatarURL: Joi.string(),
   token:Joi.string()
 });
 
