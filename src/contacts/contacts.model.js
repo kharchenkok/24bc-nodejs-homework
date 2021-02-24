@@ -2,6 +2,8 @@ import Joi from "joi";
 import objectId from "joi-objectid";
 import mongoose from "mongoose";
 import { composeContacts } from "./contacts.serializer.js";
+import mongoosePaginate from "mongoose-paginate-v2";
+
 const { Schema,Types } = mongoose;
 
 const contactsSchema = new Schema({
@@ -12,6 +14,10 @@ const contactsSchema = new Schema({
 password: { type: String, required: true },
 token: { type: String, required: false, default: ""}
 });
+
+contactsSchema.plugin(mongoosePaginate);
+
+
 const contactsModel = mongoose.model("Contact", contactsSchema);
 
 Joi.objectId = objectId(Joi);
@@ -38,8 +44,11 @@ const contactsIdSchema = Joi.object({
 });
 
 async function listContacts(req, res) {
+
   try {
-    const contactsContent = await contactsModel.find();
+    const{sub, page=1,limit=5}=req.query
+    const contactsContent = await contactsModel.paginate(sub&&{subscription:sub},{page,limit}).then(result=> result.docs);
+    // const contactsContent = await contactsModel.paginate({},{page,limit}).then(result=> sub? result.docs.filter(el=>el.subscription===sub):result.docs);
     return res.status(200).send(composeContacts(contactsContent))
   } catch (error) {
     console.error("there was an error:", error.message);

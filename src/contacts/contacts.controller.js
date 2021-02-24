@@ -6,9 +6,9 @@ const controller = Router();
 
 controller.get("/", listContacts);
 controller.get("/:id", validate(contactsIdSchema),getContactById);
-controller.delete("/:id", removeContact);
+controller.delete("/:id",validate(contactsIdSchema), removeContact);
 controller.post("/", validate(createContactsSchema), addContact);
-controller.patch("/:id", validate(updateContactsSchema),updateContact);
+controller.patch("/:id", validate(updateContactsSchema),validate(contactsIdSchema),updateContact);
 
   
 export const contactsController = controller;
