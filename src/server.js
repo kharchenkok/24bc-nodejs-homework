@@ -58,7 +58,6 @@ export class ContactsServer {
     this.server.use(morgan("combined"));
     this.server.use(cookieParser(process.env.COOKIE_SECRET))
     this.server.use('/images', express.static("src/public/images"));
-  
   }
 
   initRoutes() {
