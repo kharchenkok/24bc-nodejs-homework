@@ -29,3 +29,10 @@ export class NotFound extends Error {
       this.status = 401;
     }
   }
+  export class Unverification extends Error {
+    constructor(message) {
+      super(message);
+      this.name = "Unverification";
+      this.status = 401;
+    }
+  }

@@ -1,4 +1,4 @@
-import { Conflict, Forbidden, NotFound } from "../helpers/error.constructors.js";
+import { Conflict, Forbidden, NotFound, Unverification } from "../helpers/error.constructors.js";
 import { userModel } from "../users/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -44,6 +44,9 @@ class AuthService {
 
     if (!user) {
       throw new NotFound(`User with email ${email} was not found`);
+    }
+    if (user.verificationToken !== null) {
+      throw new Unverification('Please, verify your email');
     }
 
     const isRightPassword = await bcryptjs.compare(password, user.passwordHash);
