@@ -52,5 +52,11 @@
     "name": "Kate",
     "email": "kate@ukr.net",
     "phone": "0671902877"
+  },
+  {
+    "id": "a5305a06-c4dc-41d4-8f1e-f963a920bed7",
+    "name": "Kate1",
+    "email": "kate1@ukr.net",
+    "phone": "0671902877"
   }
 ]
